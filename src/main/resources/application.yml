@@ -1,0 +1,56 @@
+server:
+  port: 6587
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://192.168.88.200:3306/lzhengsir-oa?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: root
+      password: 123456
+      initial-size: 8
+      max-active: 16
+      min-idle: 8
+      max-wait: 60000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+
+  redis:
+    database: 0
+    host: 192.168.88.200
+    port: 6379
+    jedis:
+      pool:
+        max-active: 1000
+        max-wait: -1ms
+        max-idle: 16
+        min-idle: 8
+
+  data:
+    mongodb:
+      host: 192.168.88.200
+      port: 27017
+      database: lzhengsir
+      authentication-database: lzhengsir
+      username: lzhengsir
+      password: 123456
+
+mybatis:
+  mapper-locations: classpath*:mappers/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    root: info
+    com.gcc.mapper: warn
+  pattern:
+    console: "%d{HH:mm:ss}  %-5level  %msg%n"
+
+lzhengsir:
+  oa:
+    secret: lzhengsir888
+    expire: 5

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gcc.mapper.TbCheckinDao">
+
+    <resultMap type="com.gcc.entity.TbCheckin" id="TbCheckinMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="userId" column="user_id" jdbcType="INTEGER"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="country" column="country" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="VARCHAR"/>
+        <result property="city" column="city" jdbcType="VARCHAR"/>
+        <result property="district" column="district" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="risk" column="risk" jdbcType="INTEGER"/>
+        <result property="date" column="date" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TbCheckinMap">
+        select
+          id, user_id, address, country, province, city, district, status, risk, date, create_time
+        from tb_checkin
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TbCheckinMap">
+        select
+          id, user_id, address, country, province, city, district, status, risk, date, create_time
+        from tb_checkin
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="country != null and country != ''">
+                and country = #{country}
+            </if>
+            <if test="province != null and province != ''">
+                and province = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city}
+            </if>
+            <if test="district != null and district != ''">
+                and district = #{district}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="risk != null">
+                and risk = #{risk}
+            </if>
+            <if test="date != null">
+                and date = #{date}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from tb_checkin
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="country != null and country != ''">
+                and country = #{country}
+            </if>
+            <if test="province != null and province != ''">
+                and province = #{province}
+            </if>
+            <if test="city != null and city != ''">
+                and city = #{city}
+            </if>
+            <if test="district != null and district != ''">
+                and district = #{district}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="risk != null">
+                and risk = #{risk}
+            </if>
+            <if test="date != null">
+                and date = #{date}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into tb_checkin(user_id, address, country, province, city, district, status, risk, date, create_time)
+        values (#{userId}, #{address}, #{country}, #{province}, #{city}, #{district}, #{status}, #{risk}, #{date}, #{createTime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into tb_checkin(user_id, address, country, province, city, district, status, risk, date, create_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.userId}, #{entity.address}, #{entity.country}, #{entity.province}, #{entity.city}, #{entity.district}, #{entity.status}, #{entity.risk}, #{entity.date}, #{entity.createTime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into tb_checkin(user_id, address, country, province, city, district, status, risk, date, create_time)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.userId}, #{entity.address}, #{entity.country}, #{entity.province}, #{entity.city}, #{entity.district}, #{entity.status}, #{entity.risk}, #{entity.date}, #{entity.createTime})
+        </foreach>
+        on duplicate key update
+        user_id = values(user_id),
+        address = values(address),
+        country = values(country),
+        province = values(province),
+        city = values(city),
+        district = values(district),
+        status = values(status),
+        risk = values(risk),
+        date = values(date),
+        create_time = values(create_time)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update tb_checkin
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="country != null and country != ''">
+                country = #{country},
+            </if>
+            <if test="province != null and province != ''">
+                province = #{province},
+            </if>
+            <if test="city != null and city != ''">
+                city = #{city},
+            </if>
+            <if test="district != null and district != ''">
+                district = #{district},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="risk != null">
+                risk = #{risk},
+            </if>
+            <if test="date != null">
+                date = #{date},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from tb_checkin where id = #{id}
+    </delete>
+
+</mapper>
+
