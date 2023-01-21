@@ -3,6 +3,7 @@ package com.gcc.exception;
 import cn.hutool.http.HttpStatus;
 import com.gcc.common.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 @RestControllerAdvice
 @Slf4j
-public class GlobalExceptionHandler {
+public class GlobalExceptionAdvice {
 
     /**
      * 其他异常
@@ -32,7 +33,7 @@ public class GlobalExceptionHandler {
     public Result exception(Exception e) {
         log.error("******************发生了其他异常******************");
         e.printStackTrace();
-        return Result.error().code(HttpStatus.HTTP_INTERNAL_ERROR);
+        return Result.error().code(HttpStatus.HTTP_INTERNAL_ERROR).message("服务器开小差~");
     }
 
     /**
@@ -75,9 +76,20 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(ProjectException.class)
-    public Result nantianException(ProjectException e) {
+    public Result projectException(ProjectException e) {
         log.error("******************发生了自定义异常******************");
         e.printStackTrace();
         return Result.error().message(e.getMsg());
+    }
+
+    /**
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(UnauthorizedException.class)
+    public Result unauthorizedException(UnauthorizedException e) {
+        log.error("******************发生了无权限访问异常******************");
+        e.printStackTrace();
+        return Result.error().token(null).message("无权限访问");
     }
 }

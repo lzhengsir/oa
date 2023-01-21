@@ -22,7 +22,7 @@ import java.util.Date;
 
 @Component
 @Slf4j
-@ConfigurationProperties(prefix = "lzhengsir.oa")
+@ConfigurationProperties(prefix = "lzhengsir.jwt")
 @Setter
 public class JwtUtils {
     private String secret;

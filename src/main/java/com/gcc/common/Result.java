@@ -15,16 +15,11 @@ import java.util.Map;
  * @date: 2022/8/6 17:18
  * @description:
  */
-@Data
 @NoArgsConstructor
 @ToString
+@Data
 public class Result implements Serializable {
     private static final long serialVersionUID = -7349865073557573353L;
-    /**
-     * 是否成功
-     */
-    private Boolean success = true;
-
     /**
      * 返回码
      */
@@ -36,6 +31,11 @@ public class Result implements Serializable {
     private String message;
 
     /**
+     * 令牌
+     */
+    private String token;
+
+    /**
      * 返回数据
      */
     private Map<String, Object> data = new HashMap<>();
@@ -43,32 +43,30 @@ public class Result implements Serializable {
 
     public static Result ok() {
         Result r = new Result();
-        r.setSuccess(true);
-        r.setCode(HttpStatus.HTTP_OK);
-        r.setMessage("成功");
+        r.code = HttpStatus.HTTP_OK;
+        r.message = "成功";
         return r;
     }
 
     public static Result error() {
         Result r = new Result();
-        r.setSuccess(false);
-        r.setCode(HttpStatus.HTTP_INTERNAL_ERROR);
-        r.setMessage("失败");
+        r.code = HttpStatus.HTTP_INTERNAL_ERROR;
+        r.message = "失败";
         return r;
     }
 
-    public Result success(Boolean success) {
-        this.setSuccess(success);
-        return this;
-    }
-
     public Result message(String message) {
-        this.setMessage(message);
+        this.message = message;
         return this;
     }
 
     public Result code(Integer code) {
-        this.setCode(code);
+        this.code = code;
+        return this;
+    }
+
+    public Result token(String token) {
+        this.token = token;
         return this;
     }
 
@@ -78,7 +76,7 @@ public class Result implements Serializable {
     }
 
     public Result data(Map<String, Object> map) {
-        this.setData(map);
+        this.data = map;
         return this;
     }
 }
